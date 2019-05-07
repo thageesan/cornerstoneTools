@@ -16,9 +16,10 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run copy:webworkers && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "copy:webworkers": "cp node_modules/cornerstone-wado-image-loader/dist/*.min.js* public"
   }
 }
