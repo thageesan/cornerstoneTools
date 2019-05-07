@@ -6,6 +6,40 @@ import cornerstoneTools from 'cornerstone-tools';
 import './../service/initCornerstone';
 
 class ViewPort extends Component {
+
+  brushEnabled = false;
+  penEnabled = false;
+  brushTool = cornerstoneTools.BrushTool;
+  penTool = cornerstoneTools.FreehandMouseTool;
+
+  componentDidMount = () => {
+    cornerstoneTools.addTool(this.brushTool);
+    cornerstoneTools.addTool(this.penTool);
+  }
+
+  onProstateSegmenatation = () => {
+    this.brushEnabled = !this.brushEnabled;
+    if (this.brushEnabled) {
+      cornerstoneTools.setToolActive('Brush', { mouseButtonMask: 1 });
+    } else {
+      cornerstoneTools.setToolDisabled('Brush');
+    }
+  }
+
+  toggleBrushTool = () => {
+    this.onProstateSegmenatation();
+  }
+
+  togglePenTool = () => {
+    this.onAnnotate();
+  }
+
+  onAnnotate = () => {
+    this.penEnabled = !this.penEnabled;
+    this.penEnabled ? cornerstoneTools.setToolActive('FreehandMouse', { mouseButtonMask: 1 }) : cornerstoneTools.setToolDisabled('FreehandMouse');
+  }
+
+
   render () {
     const exampleData = {
         stack: {
@@ -17,14 +51,20 @@ class ViewPort extends Component {
         }
     }
   
-
+    const style = {
+      'height': '512px'
+    };
 
     return (
-      <CornerstoneViewport
-        viewportData={exampleData}
-        cornerstone={cornerstone} 
-        cornerstoneTools={cornerstoneTools}
-       />
+      <div style={style}>
+        <button onClick={this.toggleBrushTool}>Brush Tool</button>
+        <button onClick={this.togglePenTool}>Pen Tool</button>
+        <CornerstoneViewport
+          viewportData={exampleData}
+          cornerstone={cornerstone} 
+          cornerstoneTools={cornerstoneTools}
+        />
+      </div>
     )
   }
 }
